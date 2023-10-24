@@ -1,5 +1,9 @@
 # okok_coffe
-
+Nama Kelompok okok coffe
+: Alfi syahrin -> Home, login
+: Mita Zahara -> account
+: Maula Juanda Pratama -> transaksi
+: Zaky Abrar -> trolly
 A new Flutter project.
 
 ## Getting Started
