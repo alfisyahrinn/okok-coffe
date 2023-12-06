@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:okok_coffe/utils/color.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -20,7 +21,7 @@ class LoginPage extends StatelessWidget {
             width: 353,
             height: 50,
             decoration: BoxDecoration(
-              color: Color(0xFFF5F7FB),
+              color: MyColor.primary,
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
