@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:okok_coffe/utils/color.dart';
+import 'package:okok_coffe/pages/home/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  // void login() {
+  //   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+  //     return LoginPage();
+  //   }));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +17,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Center(
-          child: Text("Okok"),
+          child: Text(""),
         ),
       ),
       body: ListView(
@@ -21,7 +27,7 @@ class LoginPage extends StatelessWidget {
             width: 353,
             height: 50,
             decoration: BoxDecoration(
-              color: MyColor.primary,
+              color: Color(0xFFF5F7FB),
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
@@ -54,9 +60,16 @@ class LoginPage extends StatelessWidget {
             height: 16,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return HomePage();
+              }));
+            },
             child: Text(
               "Login",
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(353, 50),
