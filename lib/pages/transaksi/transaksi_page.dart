@@ -17,6 +17,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
       body: Center(
         child: Text("Transaksi Page"),
       ),
+      // bottomNavigationBar: Navbar(),
     );
   }
 }

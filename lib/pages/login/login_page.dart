@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:okok_coffe/pages/home/home_page.dart';
+import 'package:okok_coffe/widgets/Navbar.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HomePage();
+                return Navbar();
               }));
             },
             child: Text(

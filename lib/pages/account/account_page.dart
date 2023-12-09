@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
@@ -17,6 +18,7 @@ class _AccountPageState extends State<AccountPage> {
       body: Center(
         child: Text("Account Page"),
       ),
+      // bottomNavigationBar: Navbar(),
     );
   }
 }

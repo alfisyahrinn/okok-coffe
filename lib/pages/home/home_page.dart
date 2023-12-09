@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:okok_coffe/models/CategoryModel.dart';
-import 'package:okok_coffe/pages/account/account_page.dart';
-import 'package:okok_coffe/pages/keranjang/keranjang_page.dart';
-import 'package:okok_coffe/pages/transaksi/transaksi_page.dart';
 import 'package:okok_coffe/utils/color.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,61 +15,8 @@ class _HomePageState extends State<HomePage> {
     categories = CategoryModel.getCategories();
   }
 
-  int selectTabIndex = 0;
-
-  void onNavBarTapped(int index) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      if (index == 0) {
-        return HomePage();
-      } else if (index == 1) {
-        return TransaksiPage();
-      } else if (index == 2) {
-        return KeranjangPage();
-      } else if (index == 3) {
-        return AccountPage();
-      } else {
-        return HomePage();
-      }
-    }));
-    setState(() {
-      selectTabIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final listPage = [
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      //   return LoginPage();
-      // })),
-      // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      //   return LoginPage();
-      // })),
-      const Text("Trolly"),
-      const Text("Trolly"),
-      const Text("Trolly"),
-      const Text("Account"),
-    ];
-    final bottomNavBarItems = [
-      const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.account_balance_wallet_rounded),
-          label: "Transaction"),
-      const BottomNavigationBarItem(icon: Icon(Icons.trolley), label: "Trolly"),
-      const BottomNavigationBarItem(
-          icon: Icon(Icons.supervised_user_circle_rounded), label: "Account"),
-    ];
-
-    final bottomNavBar = BottomNavigationBar(
-      items: bottomNavBarItems,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white70,
-      currentIndex: selectTabIndex,
-      unselectedItemColor: Colors.black38,
-      selectedItemColor: MyColor.primary,
-      onTap: onNavBarTapped,
-    );
-
     _getCategories();
     return DefaultTabController(
       length: 8, // Ganti dengan jumlah tab yang diinginkan
@@ -195,7 +139,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        bottomNavigationBar: bottomNavBar,
+        // bottomNavigationBar: Navbar(),
       ),
     );
   }

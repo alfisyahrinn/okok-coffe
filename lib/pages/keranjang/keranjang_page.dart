@@ -17,6 +17,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
       body: Center(
         child: Text("Keranjang   Page"),
       ),
+      // bottomNavigationBar: Navbar(),
     );
   }
 }
