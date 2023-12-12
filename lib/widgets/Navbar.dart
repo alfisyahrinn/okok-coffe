@@ -5,7 +5,6 @@ import 'package:okok_coffe/pages/keranjang/keranjang_page.dart';
 import 'package:okok_coffe/pages/transaksi/transaksi_page.dart';
 import 'package:okok_coffe/utils/color.dart';
 
-
 class Navbar extends StatefulWidget {
   const Navbar({Key? key}) : super(key: key);
 
@@ -17,8 +16,8 @@ class _NavbarState extends State<Navbar> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
     HomePage(),
-    TransaksiPage(),
     KeranjangPage(),
+    TransaksiPage(),
     AccountPage(),
   ];
 
@@ -44,12 +43,12 @@ class _NavbarState extends State<Navbar> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet_rounded),
-              label: 'Transaction',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
               label: 'Trolley',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded),
+              label: 'Transaction',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
