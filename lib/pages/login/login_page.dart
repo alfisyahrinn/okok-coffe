@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
-  // void login() {
-  //   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-  //     return LoginPage();
-  //   }));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +44,7 @@ class LoginPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
+              obscureText: true,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Password',
@@ -61,9 +57,10 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return Navbar();
-              }));
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              //   return Navbar();
+              // }));
+              Get.offAll(() => Navbar());
             },
             child: Text(
               "Login",

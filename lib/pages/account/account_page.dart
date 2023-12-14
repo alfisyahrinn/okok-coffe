@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okok_coffe/pages/register/register_page.dart';
 import 'package:okok_coffe/utils/color.dart';
 
 class AccountPage extends StatefulWidget {
@@ -7,6 +9,7 @@ class AccountPage extends StatefulWidget {
   @override
   State<AccountPage> createState() => _AccountPageState();
 }
+
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
@@ -19,6 +22,7 @@ class _AccountPageState extends State<AccountPage> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +31,7 @@ class _AccountPageState extends State<AccountPage> {
                   CircleAvatar(
                     radius: 50,
                     backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
+                        NetworkImage('https://via.placeholder.com/100'),
                   ),
                   SizedBox(
                       width:
@@ -55,6 +59,23 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 42,
+              ),
+              GestureDetector(
+                onTap: () {
+                  print("klik register");
+                  Get.to(() => RegisterPage());
+                },
+                child: Text(
+                  "Create new Account",
+                  style: TextStyle(
+                    color: MyColor.secondary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
             ],
           ),
         ));
