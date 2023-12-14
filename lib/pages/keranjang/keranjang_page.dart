@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:okok_coffe/utils/color.dart';
 
 class KeranjangPage extends StatefulWidget {
@@ -72,15 +73,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      final snackBar = SnackBar(
-                        content: Text('${index} Berhasil di Hapus'),
-                        backgroundColor: (Colors.black12),
-                        action: SnackBarAction(
-                          label: 'hide',
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      
+                      Get.snackbar("halo", "hai");
                     },
                   ),
                 ),
