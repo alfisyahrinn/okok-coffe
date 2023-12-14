@@ -63,19 +63,56 @@ class _AccountPageState extends State<AccountPage> {
                 height: 42,
               ),
               GestureDetector(
+                  onTap: () {
+                    print("klik register");
+                    Get.to(() => RegisterPage());
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.accessibility_new,
+                        color: MyColor.secondary,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "Create new Account",
+                        style: TextStyle(
+                          color: MyColor.secondary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: 16,
+              ),
+              GestureDetector(
                 onTap: () {
-                  print("klik register");
-                  Get.to(() => RegisterPage());
+                  print("Logout");
                 },
-                child: Text(
-                  "Create new Account",
-                  style: TextStyle(
-                    color: MyColor.secondary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout_outlined,
+                      color: Colors.red[300],
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Colors.red[300],
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ));
