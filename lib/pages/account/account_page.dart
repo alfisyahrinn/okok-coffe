@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okok_coffe/pages/register/register_page.dart';
 import 'package:okok_coffe/utils/color.dart';
 
 class AccountPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _AccountPageState extends State<AccountPage> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -28,7 +31,7 @@ class _AccountPageState extends State<AccountPage> {
                   CircleAvatar(
                     radius: 50,
                     backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
+                        NetworkImage('https://via.placeholder.com/100'),
                   ),
                   SizedBox(
                       width:
@@ -55,6 +58,60 @@ class _AccountPageState extends State<AccountPage> {
                     ],
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 42,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    print("klik register");
+                    Get.to(() => RegisterPage());
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.accessibility_new,
+                        color: MyColor.secondary,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "Create new Account",
+                        style: TextStyle(
+                          color: MyColor.secondary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: 16,
+              ),
+              GestureDetector(
+                onTap: () {
+                  print("Logout");
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.logout_outlined,
+                      color: Colors.red[300],
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Colors.red[300],
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
