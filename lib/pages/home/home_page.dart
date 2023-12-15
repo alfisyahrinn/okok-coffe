@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okok_coffe/controller/product_controller.dart';
 import 'package:okok_coffe/models/CategoryModel.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
@@ -21,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(ProductController());
     _getCategories();
     return DefaultTabController(
       length: 8,
@@ -78,20 +81,22 @@ class _HomePageState extends State<HomePage> {
                             scrollDirection: Axis.horizontal,
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 4),
-                                decoration: BoxDecoration(
-                                    color: MyColor.primary,
-                                    borderRadius: BorderRadius.circular(48)),
-                                child: Center(
-                                  child: Text(
-                                    categories[index].name,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300,
+                              return GestureDetector(
+                                child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 18, vertical: 4),
+                                  decoration: BoxDecoration(
+                                      color: MyColor.primary,
+                                      borderRadius: BorderRadius.circular(48)),
+                                  child: Center(
+                                    child: Text(
+                                      categories[index].name,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -113,43 +118,73 @@ class _HomePageState extends State<HomePage> {
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
                               var data = snapshot.data!.docs[index];
-                              return Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.network(
-                                      '${data['img']}', // Ganti dengan URL gambar yang sesuai
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      '${data['name']}',
-                                      style: TextStyle(
-                                        color: Colors.black
-                                            .withOpacity(0.7099999785423279),
-                                        fontSize: 20,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
+                              return GestureDetector(
+                                onTap: () async {
+                                  try {
+                                    DocumentSnapshot keranjangs =
+                                        await FirebaseServie.checkCart(data.id);
+                                    if (keranjangs.exists) {
+                                      int qty = keranjangs['qty'] + 1;
+                                      controller
+                                          .updateCartQty(data.id, qty)
+                                          .then((value) => Get.snackbar(
+                                              "${data['name']}",
+                                              "Nambah 1 lagi Total ${qty}"));
+                                    } else {
+                                      controller
+                                          .addToCart(
+                                              name: data['name'],
+                                              price: data['price'],
+                                              img: data['img'],
+                                              category: data['category'],
+                                              desc: data['desc'],
+                                              uid: data.id)
+                                          .then((value) => Get.snackbar(
+                                              '${data['name']}',
+                                              "Add to card"));
+                                    }
+                                  } catch (e) {
+                                    Get.snackbar('Error', "${e}");
+                                  }
+                                },
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.network(
+                                        '${data['img']}', // Ganti dengan URL gambar yang sesuai
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.cover,
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      priceFormat(data["price"]),
-                                      style: TextStyle(
-                                        color: Color(0xFF00623B),
-                                        fontSize: 16,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(height: 8),
+                                      Text(
+                                        '${data['name']}',
+                                        style: TextStyle(
+                                          color: Colors.black
+                                              .withOpacity(0.7099999785423279),
+                                          fontSize: 20,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                decoration: ShapeDecoration(
-                                  color: Color(0x0A00623B),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        priceFormat(data["price"]),
+                                        style: TextStyle(
+                                          color: Color(0xFF00623B),
+                                          fontSize: 16,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  decoration: ShapeDecoration(
+                                    color: Color(0x0A00623B),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
                                   ),
                                 ),
                               );
