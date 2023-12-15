@@ -129,15 +129,15 @@ class RegisterPage extends StatelessWidget {
                     password: passwordController.text,
                   )
                       .then((value) {
-                    return controller
-                        .storeUserData(
+                    print(value!.user!.uid);
+                    return controller.storeUserData(
+                      uid: value.user!.uid,
                       name: nameController.text,
                       email: emailController.text,
                       password: passwordController.text,
-                    )
-                        .then((value) {
-                      Get.offAll(() => Navbar());
-                    });
+                    );
+                  }).then((value) {
+                    Get.offAll(() => Navbar());
                   });
                 } catch (e) {
                   controller.isLoading(false);
