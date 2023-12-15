@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:okok_coffe/consts/firebase_const.dart';
 
 class AuthController extends GetxController {
+  var isLoading = false.obs;
   Future<UserCredential?> loginMethod({email, password}) async {
     UserCredential? userCredential;
     try {
@@ -31,10 +32,10 @@ class AuthController extends GetxController {
 
   Future<void> storeUserData({name, email, password}) async {
     DocumentReference result =
-        await firestore.collection("users").doc(currentUser?.uid);
+        await firestore.collection("users").doc(currentUser!.uid);
 
     result.set({
-      'uuid': currentUser?.uid,
+      'id': currentUser!.uid,
       'name': name,
       'email': email,
       'password': password,

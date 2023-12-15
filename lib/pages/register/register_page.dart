@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okok_coffe/controller/auth_controller.dart';
 import 'package:okok_coffe/utils/color.dart';
+import 'package:okok_coffe/widgets/Loading.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -117,40 +118,44 @@ class RegisterPage extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                controller
-                    .registerMethod(
-                  email: emailController.text,
-                  password: passwordController.text,
-                )
-                    .then((value) {
-                  return controller
-                      .storeUserData(
-                        name: nameController.text,
-                        email: emailController.text,
-                        password: passwordController.text,
-                      )
-                      .then(
-                        (value) => Get.offAll(
-                          () => const Navbar(),
-                        ),
-                      );
-                });
-              } catch (e) {
-                controller.logoutMethod();
-              }
-            },
-            child: Text(
-              "Register",
-              style: TextStyle(
-                color: Colors.white,
+          Obx(
+            () => ElevatedButton(
+              onPressed: () async {
+                controller.isLoading(true);
+                try {
+                  controller
+                      .registerMethod(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  )
+                      .then((value) {
+                    return controller
+                        .storeUserData(
+                      name: nameController.text,
+                      email: emailController.text,
+                      password: passwordController.text,
+                    )
+                        .then((value) {
+                      Get.offAll(() => Navbar());
+                    });
+                  });
+                } catch (e) {
+                  controller.isLoading(false);
+                  controller.logoutMethod();
+                }
+              },
+              child: controller.isLoading.value
+                  ? Loading()
+                  : Text(
+                      "Register",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(353, 50),
+                backgroundColor: const Color(0xFF00623B),
               ),
-            ),
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(353, 50),
-              backgroundColor: const Color(0xFF00623B),
             ),
           ),
         ],

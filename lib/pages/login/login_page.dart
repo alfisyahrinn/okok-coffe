@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okok_coffe/controller/auth_controller.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
 
 class LoginPage extends StatelessWidget {
@@ -7,6 +8,9 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(AuthController());
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -26,6 +30,7 @@ class LoginPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Email',
@@ -44,6 +49,7 @@ class LoginPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
+              controller: passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -57,9 +63,7 @@ class LoginPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              //   return Navbar();
-              // }));
+              // controller.loginMethod(email: , password: ,);
               Get.offAll(() => Navbar());
             },
             child: Text(
@@ -70,7 +74,7 @@ class LoginPage extends StatelessWidget {
             ),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(353, 50),
-              primary: Color(0xFF00623B),
+              backgroundColor: Color(0xFF00623B),
             ),
           ),
         ],
