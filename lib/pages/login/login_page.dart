@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okok_coffe/consts/consts.dart';
 import 'package:okok_coffe/controller/auth_controller.dart';
+import 'package:okok_coffe/widgets/Loading.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
 
 class LoginPage extends StatelessWidget {
@@ -8,6 +11,13 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Get.to(() => LoginPage());
+      } else {
+        Get.to(() => Navbar());
+      }
+    });
     var controller = Get.put(AuthController());
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
@@ -61,20 +71,35 @@ class LoginPage extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          ElevatedButton(
-            onPressed: () {
-              // controller.loginMethod(email: , password: ,);
-              Get.offAll(() => Navbar());
-            },
-            child: Text(
-              "Login",
-              style: TextStyle(
-                color: Colors.white,
+          Obx(
+            () => ElevatedButton(
+              onPressed: () {
+                controller.isLoading(true);
+                controller
+                    .loginMethod(
+                  email: emailController.text,
+                  password: passwordController.text,
+                )
+                    .then((value) {
+                  print(value);
+                  if (value != null) {
+                    Get.offAll(() => const Navbar());
+                  }
+                  controller.isLoading(false);
+                });
+              },
+              child: controller.isLoading.value
+                  ? Loading()
+                  : Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(353, 50),
+                backgroundColor: Color(0xFF00623B),
               ),
-            ),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(353, 50),
-              backgroundColor: Color(0xFF00623B),
             ),
           ),
         ],

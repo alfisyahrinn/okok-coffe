@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:okok_coffe/consts/firebase_const.dart';
 
@@ -8,9 +9,14 @@ class AuthController extends GetxController {
   Future<UserCredential?> loginMethod({email, password}) async {
     UserCredential? userCredential;
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
     } catch (e) {
-      print(e);
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: Colors.red,
+      );
     }
     return userCredential;
   }
