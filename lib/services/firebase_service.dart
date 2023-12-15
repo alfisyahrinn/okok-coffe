@@ -8,5 +8,7 @@ class FirebaseServie {
         .snapshots();
   }
 
-  
+  static getBaranag() {
+    return firestore.collection("products").get();
+  }
 }
