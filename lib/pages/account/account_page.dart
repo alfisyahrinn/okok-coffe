@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okok_coffe/consts/consts.dart';
+import 'package:okok_coffe/controller/auth_controller.dart';
+import 'package:okok_coffe/pages/login/login_page.dart';
 import 'package:okok_coffe/pages/register/register_page.dart';
 import 'package:okok_coffe/utils/color.dart';
 
@@ -11,6 +14,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  var controller = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +45,7 @@ class _AccountPageState extends State<AccountPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Nama Pengguna',
+                        currentUser?.displayName ?? 'name',
                         style: TextStyle(
                           fontSize: 20,
                           color: MyColor.primary,
@@ -49,7 +53,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                       Text(
-                        'email@example.com',
+                        currentUser?.email ?? 'email',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[400],
@@ -91,7 +95,9 @@ class _AccountPageState extends State<AccountPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  print("Logout");
+                  controller
+                      .logoutMethod()
+                      .then((value) => Get.offAll(LoginPage()));
                 },
                 child: Row(
                   children: [

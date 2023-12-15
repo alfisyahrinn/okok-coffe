@@ -1,20 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:okok_coffe/pages/controller/auth_controller.dart';
+import 'package:okok_coffe/controller/auth_controller.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
+  const RegisterPage({super.key});
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
+    TextEditingController nameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -123,13 +122,25 @@ class RegisterPage extends StatelessWidget {
               try {
                 controller
                     .registerMethod(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    )
-                    .then((value) => Get.offAll(() => Navbar()));
-              } catch (e) {}
-
-              // Get.offAll(() => HomePage());
+                  email: emailController.text,
+                  password: passwordController.text,
+                )
+                    .then((value) {
+                  return controller
+                      .storeUserData(
+                        name: nameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                      )
+                      .then(
+                        (value) => Get.offAll(
+                          () => const Navbar(),
+                        ),
+                      );
+                });
+              } catch (e) {
+                controller.logoutMethod();
+              }
             },
             child: Text(
               "Register",
