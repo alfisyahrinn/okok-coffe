@@ -220,12 +220,20 @@ class _KeranjangPageState extends State<KeranjangPage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 try {
-                                  controller.setChekout(
-                                      name: 'udin',
-                                      status: false,
-                                      totalPrice:
-                                          controller.totalPrice.toString(),
-                                      products: productsList);
+                                  controller
+                                      .setChekout(
+                                          name: 'udin',
+                                          status: false,
+                                          totalPrice:
+                                              controller.totalPrice.toString(),
+                                          products: productsList)
+                                      .then((value) {
+                                    return controller.deleteAllKeranjangs();
+                                  }).then((value) {
+                                    Get.snackbar("Success",
+                                        "Di tambahakan ke transaksi");
+                                    Get.offAll(() => Navbar(initialIndex: 2));
+                                  });
                                 } catch (e) {
                                   Get.snackbar("Error", e.toString(),
                                       backgroundColor: Colors.redAccent);
