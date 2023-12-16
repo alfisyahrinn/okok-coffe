@@ -19,4 +19,8 @@ class FirebaseServie {
   static getKeranjangs() {
     return firestore.collection("keranjangs").get();
   }
+  static deleteKeranjangs(id) {
+    return firestore.collection("keranjangs").doc(id).delete();
+  }
+
 }

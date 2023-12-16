@@ -5,8 +5,8 @@ import 'package:okok_coffe/controller/keranjang_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:okok_coffe/utils/price_format.dart';
-import 'package:okok_coffe/utils/total_price.dart';
 import 'package:okok_coffe/widgets/Loading.dart';
+import 'package:okok_coffe/widgets/Navbar.dart';
 
 class KeranjangPage extends StatefulWidget {
   const KeranjangPage({super.key});
@@ -17,8 +17,15 @@ class KeranjangPage extends StatefulWidget {
 
 class _KeranjangPageState extends State<KeranjangPage> {
   @override
+  void dispose() {
+    Get.delete<KeranjangController>();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var controller = Get.put(KeranjangController());
+    List<Map<String, dynamic>> productsList = [];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,35 +44,34 @@ class _KeranjangPageState extends State<KeranjangPage> {
       body: FutureBuilder(
         future: FirebaseServie.getKeranjangs(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          var asu = totalPrice(snapshot.data!);
-          snapshot.data!.docs.forEach((data) {
-            String productId =
-                data.id; // Ganti dengan key yang mengidentifikasi produk
-            int qtyFromFirestore =
-                data['qty']; // Ganti dengan nilai qty dari Firestore
-            int priceFirestore = int.parse(data['price']);
-            controller.setQtyFromFirestore(productId, qtyFromFirestore);
-            controller.setTotalPrice(
-                productId, qtyFromFirestore, priceFirestore);
-          });
+          controller.getDataFromSnapshot(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Loading(),
             );
           } else {
-            if (snapshot.data!.docs.isEmpty) {
+            if (snapshot.hasError) {
               return Center(
-                child: Text("Keranjang masih kosong"),
+                child: Text('Error: ${snapshot.error}'),
               );
-            } else {
+            } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
               return Stack(
                 children: [
                   ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.docs[index];
-                      String productId = data.id;
 
+                      String productId = data.id;
+                      Map<String, dynamic> productsData = {
+                        'name': data['name'],
+                        'price': data['price'],
+                        'img': data['img'],
+                        'desc': data['desc'],
+                        'category': data['category'],
+                        'qty': controller.productQty[productId],
+                      };
+                      productsList.add(productsData);
                       return Card(
                         color: Colors.white70,
                         margin: const EdgeInsets.all(8),
@@ -144,8 +150,13 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                   color: Colors.redAccent,
                                 ),
                                 onPressed: () {
-                                  Get.snackbar(
-                                      "Delete", "Produk berhasil dihapus");
+                                  try {
+                                    controller.deleteItemsKeranjang(
+                                        data.id, data['name']);
+                                  } catch (e) {
+                                    Get.snackbar("Error", e.toString(),
+                                        backgroundColor: Colors.redAccent);
+                                  }
                                 },
                               ),
                             ],
@@ -207,7 +218,19 @@ class _KeranjangPageState extends State<KeranjangPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                try {
+                                  controller.setChekout(
+                                      name: 'udin',
+                                      status: false,
+                                      totalPrice:
+                                          controller.totalPrice.toString(),
+                                      products: productsList);
+                                } catch (e) {
+                                  Get.snackbar("Error", e.toString(),
+                                      backgroundColor: Colors.redAccent);
+                                }
+                              },
                               child: Text(
                                 'Checkout',
                                 style: TextStyle(
@@ -231,6 +254,10 @@ class _KeranjangPageState extends State<KeranjangPage> {
                     ),
                   ),
                 ],
+              );
+            } else {
+              return Center(
+                child: Text("Keranjang masih kosong"),
               );
             }
           }
