@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okok_coffe/controller/keranjang_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:okok_coffe/utils/price_format.dart';
@@ -17,6 +18,7 @@ class KeranjangPage extends StatefulWidget {
 class _KeranjangPageState extends State<KeranjangPage> {
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(KeranjangController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -35,6 +37,17 @@ class _KeranjangPageState extends State<KeranjangPage> {
       body: FutureBuilder(
         future: FirebaseServie.getKeranjangs(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          var asu = totalPrice(snapshot.data!);
+          snapshot.data!.docs.forEach((data) {
+            String productId =
+                data.id; // Ganti dengan key yang mengidentifikasi produk
+            int qtyFromFirestore =
+                data['qty']; // Ganti dengan nilai qty dari Firestore
+            int priceFirestore = int.parse(data['price']);
+            controller.setQtyFromFirestore(productId, qtyFromFirestore);
+            controller.setTotalPrice(
+                productId, qtyFromFirestore, priceFirestore);
+          });
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Loading(),
@@ -51,28 +64,31 @@ class _KeranjangPageState extends State<KeranjangPage> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.docs[index];
+                      String productId = data.id;
+
                       return Card(
                         color: Colors.white70,
                         margin: const EdgeInsets.all(8),
                         child: ListTile(
                           leading: Container(
-                            height: 58,
-                            width: 58,
-                            alignment: Alignment.center,
-                            decoration: ShapeDecoration(
-                              color: MyColor.primary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: Text(
-                              "${data['qty']}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 31,
-                                fontWeight: FontWeight.w500,
+                              height: 58,
+                              width: 58,
+                              alignment: Alignment.center,
+                              decoration: ShapeDecoration(
+                                color: MyColor.primary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
                               ),
-                            ),
-                          ),
+                              child: Obx(
+                                () => Text(
+                                  controller.productQty[productId].toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 31,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )),
                           title: Text(
                             "${data['name']}",
                             style: TextStyle(
@@ -93,21 +109,27 @@ class _KeranjangPageState extends State<KeranjangPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.decrementQty(data.id);
+                                },
                                 child: Icon(
                                   Icons.remove,
                                   color: Colors.black,
                                 ),
                               ),
-                              Text(
-                                "${data['qty']}",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
+                              Obx(
+                                () => Text(
+                                  controller.productQty[productId].toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.incrementQty(data.id);
+                                },
                                 child: Icon(
                                   Icons.add,
                                   color: Colors.black,
@@ -167,16 +189,18 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                     fontSize: 18,
                                   ),
                                 ),
-                                Text(
-                                  priceFormat(
-                                    totalPrice(snapshot.data!).toString(),
+                                Obx(
+                                  () => Text(
+                                    priceFormat(
+                                      controller.totalPrice.toString(),
+                                    ),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                                )
                               ],
                             ),
                           ),
