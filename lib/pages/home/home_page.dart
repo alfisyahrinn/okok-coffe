@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                                           .updateCartQty(data.id, qty)
                                           .then((value) => Get.snackbar(
                                               "${data['name']}",
-                                              "Nambah 1 lagi Total ${qty}"));
+                                              "Nambah 1, Total ${qty} ${data['name']}"));
                                     } else {
                                       controller
                                           .addToCart(

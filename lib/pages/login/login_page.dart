@@ -21,6 +21,9 @@ class LoginPage extends StatelessWidget {
     var controller = Get.put(AuthController());
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+
+    emailController.text = 'syahrin@gmail.com';
+    passwordController.text = 'password';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

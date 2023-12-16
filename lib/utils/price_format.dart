@@ -1,5 +1,5 @@
 String priceFormat(String amount) {
-  String currency = 'Rp ';
+  String currency = 'Rp. ';
 
   String amountString = amount.replaceAll(',', ''); // Menghapus koma jika ada
   String formattedAmount = '';

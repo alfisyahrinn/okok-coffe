@@ -15,4 +15,8 @@ class FirebaseServie {
   static checkCart(uid) {
     return firestore.collection("keranjangs").doc(uid).get();
   }
+
+  static getKeranjangs() {
+    return firestore.collection("keranjangs").get();
+  }
 }
