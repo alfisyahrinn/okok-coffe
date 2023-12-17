@@ -5,6 +5,7 @@ import 'package:okok_coffe/consts/consts.dart';
 import 'package:okok_coffe/controller/keranjang_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
+import 'package:okok_coffe/utils/datetime.dart';
 import 'package:okok_coffe/utils/price_format.dart';
 import 'package:okok_coffe/widgets/Loading.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
@@ -26,6 +27,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(KeranjangController());
+    DateTime dateTime = DateTime.now();
     List<Map<String, dynamic>> productsList = [];
     Map<String, dynamic> userData = {
       'name': currentUser!.email,
@@ -251,6 +253,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                                 .setChekout(
                                                     name: noMejaController.text,
                                                     status: false,
+                                                    datetime: dateTime,
                                                     user: userData,
                                                     totalPrice: controller
                                                         .totalPrice

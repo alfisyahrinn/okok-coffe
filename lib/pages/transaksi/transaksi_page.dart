@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:okok_coffe/controller/transaction_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:okok_coffe/utils/price_format.dart';
+import 'package:okok_coffe/utils/price_item.dart';
 import 'package:okok_coffe/widgets/Loading.dart';
+
+import '../../utils/datetime.dart';
 
 class TransaksiPage extends StatefulWidget {
   const TransaksiPage({super.key});
@@ -13,6 +18,7 @@ class TransaksiPage extends StatefulWidget {
 }
 
 class _TransaksiPageState extends State<TransaksiPage> {
+  var controller = Get.put(TransactionController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,80 +44,220 @@ class _TransaksiPageState extends State<TransaksiPage> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       var data = snapshot.data!.docs[index];
-
-                      return Card(
-                        color: Colors.white70,
-                        margin: const EdgeInsets.all(8),
-                        child: ListTile(
-                          leading: Container(
-                            height: 58,
-                            width: 58,
-                            alignment: Alignment.center,
-                            decoration: ShapeDecoration(
-                              color: MyColor.primary,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
+                      print(data['products']);
+                      return GestureDetector(
+                        onTap: () {
+                          Get.bottomSheet(
+                            Container(
+                              color: Colors.white,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 34),
+                                    child: Text(
+                                      "Produk Meja ${data['name']}",
+                                      style: TextStyle(
+                                        color: MyColor.primary,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 230,
+                                    child: ListView.builder(
+                                      itemCount: data['products'].length,
+                                      itemBuilder: (context, index) {
+                                        var product = data['products'][index];
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 34, vertical: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    product['name'],
+                                                    style:
+                                                        TextStyle(fontSize: 18),
+                                                  ),
+                                                  Text(priceFormat(
+                                                      product['price'])),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(product['qty']
+                                                        .toString()),
+                                                    SizedBox(
+                                                      width: 155,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Text(
+                                                  priceFormat(itemPrice(
+                                                          product['qty'],
+                                                          product['price'])
+                                                      .toString()),
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 34),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total Harga :",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Text(
+                                          priceFormat(data['totalPrice']),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.updateTransaction(
+                                          uid: data.id, name: data['name']);
+                                    },
+                                    child: Text(
+                                      "Selesai",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 16, horizontal: 190),
+                                      backgroundColor: MyColor.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Text(
-                              "01",
+                          );
+                        },
+                        child: Card(
+                          color: data['status'] == false
+                              ? Colors.white70
+                              : MyColor.primary,
+                          margin: const EdgeInsets.all(8),
+                          child: ListTile(
+                            leading: Container(
+                              height: 58,
+                              width: 58,
+                              alignment: Alignment.center,
+                              decoration: ShapeDecoration(
+                                color: data['status'] == false
+                                    ? MyColor.primary
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              child: Text(
+                                data['name'],
+                                style: TextStyle(
+                                  color: data['status'] == false
+                                      ? Colors.white
+                                      : MyColor.primary,
+                                  fontSize: 31,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  "Meja ${data['name']}",
+                                  style: TextStyle(
+                                    // fontSize: 14,
+                                    color: data['status'] == false
+                                        ? MyColor.primary
+                                        : Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: 16,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: data['status'] == false
+                                        ? Color.fromARGB(255, 250, 225, 87)
+                                        : Color.fromARGB(255, 56, 255, 89),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    data['status'] == false
+                                        ? "Pending"
+                                        : "Selesai",
+                                    style: TextStyle(fontSize: 10),
+                                  ),
+                                )
+                              ],
+                            ),
+                            subtitle: Text(
+                              formatDateTime(data['datetime']),
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 31,
+                                fontSize: 10,
+                                color: data['status'] == false
+                                    ? MyColor.primary
+                                    : Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
-                          title: Text(
-                            "Meja 01",
-                            style: TextStyle(
-                              // fontSize: 14,
-                              color: MyColor.primary,
-                              fontWeight: FontWeight.w600,
+                            trailing: Text(
+                              priceFormat(data["totalPrice"]),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: data['status'] == false
+                                    ? MyColor.primary
+                                    : Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          subtitle: Text(
-                            priceFormat('10000000'),
-                            style: TextStyle(
-                              // fontSize: 10,
-                              color: MyColor.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.remove,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              Text(
-                                '1',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.add,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 32,
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.redAccent,
-                                ),
-                                onPressed: () {},
-                              ),
-                            ],
                           ),
                         ),
                       );
