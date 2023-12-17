@@ -62,13 +62,21 @@ class KeranjangController extends GetxController {
         .then((value) => Get.offAll(() => Navbar(initialIndex: 1)));
   }
 
-  Future<void> setChekout(
-      {name, totalPrice, status, List<Map<String, dynamic>>? products}) async {
+  Future<void> setChekout({
+    name,
+    totalPrice,
+    status,
+    List<Map<String, dynamic>>? products,
+    user,
+    datetime,
+  }) async {
     DocumentReference cart = await firestore.collection("transactions").add({
       "name": name,
       "totalPrice": totalPrice,
       "status": status,
+      "user": user,
       "products": products,
+      "datetime" : datetime,
     });
   }
 

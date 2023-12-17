@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:okok_coffe/consts/consts.dart';
 import 'package:okok_coffe/controller/keranjang_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
@@ -26,6 +27,11 @@ class _KeranjangPageState extends State<KeranjangPage> {
   Widget build(BuildContext context) {
     var controller = Get.put(KeranjangController());
     List<Map<String, dynamic>> productsList = [];
+    Map<String, dynamic> userData = {
+      'name': currentUser!.email,
+      'uid': currentUser!.uid,
+    };
+    TextEditingController noMejaController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -219,25 +225,68 @@ class _KeranjangPageState extends State<KeranjangPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
                               onPressed: () {
-                                try {
-                                  controller
-                                      .setChekout(
-                                          name: 'udin',
-                                          status: false,
-                                          totalPrice:
-                                              controller.totalPrice.toString(),
-                                          products: productsList)
-                                      .then((value) {
-                                    return controller.deleteAllKeranjangs();
-                                  }).then((value) {
-                                    Get.snackbar("Success",
-                                        "Di tambahakan ke transaksi");
-                                    Get.offAll(() => Navbar(initialIndex: 2));
-                                  });
-                                } catch (e) {
-                                  Get.snackbar("Error", e.toString(),
-                                      backgroundColor: Colors.redAccent);
-                                }
+                                Get.defaultDialog(
+                                    title: "Nomor Meja",
+                                    content: Container(
+                                      width: 353,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFF5F7FB),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: TextField(
+                                        controller: noMejaController,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: 'No Meja',
+                                          contentPadding: EdgeInsets.all(12),
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          try {
+                                            controller
+                                                .setChekout(
+                                                    name: noMejaController.text,
+                                                    status: false,
+                                                    user: userData,
+                                                    totalPrice: controller
+                                                        .totalPrice
+                                                        .toString(),
+                                                    products: productsList)
+                                                .then((value) {
+                                              return controller
+                                                  .deleteAllKeranjangs();
+                                            }).then((value) {
+                                              Get.snackbar("Success",
+                                                  "Di tambahakan ke transaksi");
+                                              Get.offAll(() =>
+                                                  Navbar(initialIndex: 2));
+                                            });
+                                          } catch (e) {
+                                            Get.snackbar("Error", e.toString(),
+                                                backgroundColor:
+                                                    Colors.redAccent);
+                                          }
+                                        },
+                                        child: Text(
+                                          "Checkout Now",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: MyColor.primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                      )
+                                    ]);
                               },
                               child: Text(
                                 'Checkout',
