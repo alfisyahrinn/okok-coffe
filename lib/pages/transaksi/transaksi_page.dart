@@ -23,7 +23,18 @@ class _TransaksiPageState extends State<TransaksiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Transaksi"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            "Transaksi  ",
+            style: TextStyle(
+              color: MyColor.primary,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: FirebaseServie.getTransactions(),
@@ -68,7 +79,7 @@ class _TransaksiPageState extends State<TransaksiPage> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 230,
+                                    height: 300,
                                     child: ListView.builder(
                                       itemCount: data['products'].length,
                                       itemBuilder: (context, index) {
@@ -97,26 +108,26 @@ class _TransaksiPageState extends State<TransaksiPage> {
                                                       product['price'])),
                                                 ],
                                               ),
-                                              Expanded(
+                                              Container(
+                                                width: 150,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Text(product['qty']
                                                         .toString()),
-                                                    SizedBox(
-                                                      width: 155,
-                                                    )
+                                                    Text(
+                                                        priceFormat(itemPrice(
+                                                                product['qty'],
+                                                                product[
+                                                                    'price'])
+                                                            .toString()),
+                                                        style: TextStyle(
+                                                            fontSize: 16)),
                                                   ],
                                                 ),
                                               ),
-                                              Text(
-                                                  priceFormat(itemPrice(
-                                                          product['qty'],
-                                                          product['price'])
-                                                      .toString()),
-                                                  style:
-                                                      TextStyle(fontSize: 16)),
                                             ],
                                           ),
                                         );
@@ -150,24 +161,29 @@ class _TransaksiPageState extends State<TransaksiPage> {
                                   SizedBox(
                                     height: 16,
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      controller.updateTransaction(
-                                          uid: data.id, name: data['name']);
-                                    },
-                                    child: Text(
-                                      "Selesai",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    height: 50,
+                                    width: 400,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        controller.updateTransaction(
+                                            uid: data.id, name: data['name']);
+                                      },
+                                      child: Text(
+                                        "Selesai",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 16, horizontal: 190),
-                                      backgroundColor: MyColor.primary,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: MyColor.primary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
                                       ),
                                     ),
                                   ),
