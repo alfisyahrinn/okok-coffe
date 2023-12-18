@@ -167,19 +167,28 @@ class _TransaksiPageState extends State<TransaksiPage> {
                                     height: 50,
                                     width: 400,
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        controller.updateTransaction(
-                                            uid: data.id, name: data['name']);
-                                      },
+                                      onPressed: data['status'] == false
+                                          ? () {
+                                              controller.updateTransaction(
+                                                  uid: data.id,
+                                                  name: data['name']);
+                                            }
+                                          : null,
                                       child: Text(
-                                        "Selesai",
+                                        data['status'] == false
+                                            ? "Bayar"
+                                            : "Selesai",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors.white,
+                                          color: data['status'] == false
+                                              ? Colors.white
+                                              : MyColor.primary,
                                         ),
                                       ),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: MyColor.primary,
+                                        backgroundColor: data['status'] == false
+                                            ? MyColor.primary
+                                            : MyColor.secondary,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
