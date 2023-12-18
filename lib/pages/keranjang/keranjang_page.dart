@@ -52,7 +52,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
       body: FutureBuilder(
         future: FirebaseServie.getKeranjangs(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          controller.getDataFromSnapshot(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Loading(),
@@ -63,6 +62,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+              controller.getDataFromSnapshot(snapshot);
               return Stack(
                 children: [
                   ListView.builder(
@@ -148,9 +148,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
                                   Icons.add,
                                   color: Colors.black,
                                 ),
-                              ),
-                              SizedBox(
-                                width: 32,
                               ),
                               IconButton(
                                 icon: const Icon(
