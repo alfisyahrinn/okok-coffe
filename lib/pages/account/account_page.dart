@@ -5,6 +5,7 @@ import 'package:okok_coffe/consts/consts.dart';
 import 'package:okok_coffe/controller/auth_controller.dart';
 import 'package:okok_coffe/pages/login/login_page.dart';
 import 'package:okok_coffe/pages/register/register_page.dart';
+import 'package:okok_coffe/pages/report/report_page.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:okok_coffe/widgets/Loading.dart';
@@ -92,6 +93,33 @@ class _AccountPageState extends State<AccountPage> {
                           ),
                           Text(
                             "Create new Account",
+                            style: TextStyle(
+                              color: MyColor.secondary,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        print("klik register");
+                        Get.to(() => ReportPage());
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.bar_chart,
+                            color: MyColor.secondary,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Report",
                             style: TextStyle(
                               color: MyColor.secondary,
                               fontSize: 18,
