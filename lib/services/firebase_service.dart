@@ -19,9 +19,15 @@ class FirebaseServie {
   static getKeranjangs() {
     return firestore.collection("keranjangs").get();
   }
-  
+
   static getTransactions() {
     return firestore.collection("transactions").get();
   }
 
+  static getChart() {
+    return firestore
+        .collection("chart")
+        .doc('cK8hraWftagxya59gLbq')
+        .snapshots();
+  }
 }

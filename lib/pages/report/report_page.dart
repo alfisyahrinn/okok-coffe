@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -29,14 +30,13 @@ class ReportPage extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+              Center(
                 child: Text(
                   "Total penjualan",
                   style: TextStyle(
-                    color: MyColor.primary,
+                    color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
@@ -44,19 +44,15 @@ class ReportPage extends StatelessWidget {
                 height: 16,
               ),
               SizedBox(
-                height: 400,
+                height: 300,
                 child: SfCartesianChart(
                   // Initialize category axis
                   primaryXAxis: CategoryAxis(),
-                  series: <ChartSeries<SalesData, String>>[
-                    ColumnSeries<SalesData, String>(
-                        // Bind data source
+                  series: <LineSeries<SalesData, String>>[
+                    LineSeries<SalesData, String>(
                         dataSource: <SalesData>[
-                          SalesData('Jan', 35),
-                          SalesData('Feb', 28),
-                          SalesData('Mar', 34),
-                          SalesData('Apr', 32),
-                          SalesData('May', 40)
+                          SalesData('Nov', 0),
+                          SalesData('Des', 10),
                         ],
                         xValueMapper: (SalesData sales, _) => sales.year,
                         yValueMapper: (SalesData sales, _) => sales.sales)
