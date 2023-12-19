@@ -6,11 +6,18 @@ import 'package:okok_coffe/consts/firebase_const.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
+  Rx<User?> currentUser = Rx<User?>(FirebaseAuth.instance.currentUser);
+  List datas = [];
   Future<UserCredential?> loginMethod({email, password}) async {
     UserCredential? userCredential;
     try {
-      userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      userCredential = await auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        currentUser.value = value.user;
+        print({currentUser.value!.uid, currentUser.value!.email});
+        ;
+      });
     } catch (e) {
       Get.snackbar(
         "Error",
@@ -33,18 +40,20 @@ class AuthController extends GetxController {
   }
 
   Future<void> logoutMethod() async {
-    await auth.signOut();
+    await auth.signOut().then((value) {
+      currentUser.value = null;
+    });
   }
 
   Future<void> storeUserData({name, email, password, uid}) async {
-    DocumentReference result =
-        await firestore.collection("users").doc(uid);
+    DocumentReference result = await firestore.collection("users").doc(uid);
 
     result.set({
       'id': uid,
       'name': name,
       'email': email,
       'password': password,
+      'role': 'user',
     });
   }
 

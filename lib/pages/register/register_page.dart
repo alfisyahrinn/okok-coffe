@@ -125,22 +125,24 @@ class RegisterPage extends StatelessWidget {
                 try {
                   controller
                       .registerMethod(
-                    email: emailController.text,
-                    password: passwordController.text,
-                  )
+                        email: emailController.text,
+                        password: passwordController.text,
+                      )
                       .then((value) {
-                    print(value!.user!.uid);
-                    return controller.storeUserData(
-                      uid: value.user!.uid,
-                      name: nameController.text,
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
-                  }).then((value) {
-                    Get.offAll(() => Navbar());
-                  });
+                        return controller.storeUserData(
+                          uid: value!.user!.uid,
+                          name: nameController.text,
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                      })
+                      .then((value) => Get.snackbar(
+                          "Berhasil!", "Pendaftaran Akun Berhasil"))
+                      .then((value) {
+                        controller.isLoading(false);
+                        Get.offAll(() => Navbar());
+                      });
                 } catch (e) {
-                  controller.isLoading(false);
                   controller.logoutMethod();
                 }
               },
