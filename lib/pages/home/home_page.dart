@@ -87,13 +87,17 @@ class _HomePageState extends State<HomePage> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 18, vertical: 4),
                                   decoration: BoxDecoration(
-                                      color: MyColor.primary,
+                                      color: categories[index].name == 'All'
+                                          ? MyColor.primary
+                                          : Color(0x0A00623B),
                                       borderRadius: BorderRadius.circular(48)),
                                   child: Center(
                                     child: Text(
                                       categories[index].name,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: categories[index].name == 'All'
+                                            ? Colors.white
+                                            : MyColor.secondary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w300,
                                       ),
@@ -151,11 +155,13 @@ class _HomePageState extends State<HomePage> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.network(
-                                        '${data['img']}', // Ganti dengan URL gambar yang sesuai
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.cover,
+                                      Container(
+                                        height: 80,
+                                        width: 80,
+                                        child: Image.network(
+                                          '${data['img']}',
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                       SizedBox(height: 8),
                                       Text(
