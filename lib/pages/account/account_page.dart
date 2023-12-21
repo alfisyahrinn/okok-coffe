@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
@@ -16,7 +15,10 @@ class _AccountPageState extends State<AccountPage> {
         title: Text("Account"),
       ),
       body: Center(
-        child: Text("Account Page"),
+        child: Text(
+          "Acccount Mitha tellah di edit okokk",
+          style: TextStyle(fontSize: 16),
+        ),
       ),
       // bottomNavigationBar: Navbar(),
     );
