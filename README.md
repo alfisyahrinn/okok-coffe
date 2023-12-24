@@ -1,4 +1,18 @@
 # okok_coffe
+![Slide 16_9 - 2](https://github.com/alfisyahrinn/okok-coffe/assets/103109849/e7fca9f5-bcd0-42d9-90bf-e2f98753889d)
+![Slide 16_9 ss 1](https://github.com/alfisyahrinn/okok-coffe/assets/103109849/b16bf418-e4ef-49ec-a7c1-537e529b9926)
+
+
+
+
+
+
+
+
+
+
+
+
 Nama Kelompok okok coffe
 : Alfi syahrin -> Home, login
 : Mita Zahara -> account
