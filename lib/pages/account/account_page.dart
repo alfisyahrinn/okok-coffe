@@ -71,7 +71,7 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                             ),
                             Text(
-                              currentUser?.email ?? 'email',
+                              data['email'] ?? 'email',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[400],
