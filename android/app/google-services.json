@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "315416943230",
+    "project_id": "okok-coffee-faa2a",
+    "storage_bucket": "okok-coffee-faa2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315416943230:android:95b09411e966ef4e33d62f",
+        "android_client_info": {
+          "package_name": "com.example.okok_coffe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnUwcosdlG3EInudcsrfAYCraWKN6ueEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
