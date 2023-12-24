@@ -5,7 +5,6 @@ import 'package:okok_coffe/consts/consts.dart';
 import 'package:okok_coffe/controller/keranjang_controller.dart';
 import 'package:okok_coffe/services/firebase_service.dart';
 import 'package:okok_coffe/utils/color.dart';
-import 'package:okok_coffe/utils/datetime.dart';
 import 'package:okok_coffe/utils/price_format.dart';
 import 'package:okok_coffe/widgets/Loading.dart';
 import 'package:okok_coffe/widgets/Navbar.dart';
@@ -72,6 +71,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
 
                       String productId = data.id;
                       Map<String, dynamic> productsData = {
+                        'id': productId,
                         'name': data['name'],
                         'price': data['price'],
                         'img': data['img'],
@@ -80,6 +80,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                         'qty': controller.productQty[productId],
                       };
                       productsList.add(productsData);
+                      print(productsList);
                       return Card(
                         color: Colors.white70,
                         margin: const EdgeInsets.all(8),
@@ -125,24 +126,36 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               TextButton(
                                 onPressed: () {
                                   controller.decrementQty(data.id);
+                                  int index = productsList.indexWhere(
+                                      (product) => product['id'] == productId);
+                                  if (index != -1) {
+                                    productsList[index]['qty'] =
+                                        controller.productQty[productId];
+                                  }
                                 },
                                 child: Icon(
                                   Icons.remove,
                                   color: Colors.black,
                                 ),
                               ),
-                              Obx(
-                                () => Text(
+                              Obx(() {
+                                return Text(
                                   controller.productQty[productId].toString(),
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
                                   ),
-                                ),
-                              ),
+                                );
+                              }),
                               TextButton(
                                 onPressed: () {
                                   controller.incrementQty(data.id);
+                                  int index = productsList.indexWhere(
+                                      (product) => product['id'] == productId);
+                                  if (index != -1) {
+                                    productsList[index]['qty'] =
+                                        controller.productQty[productId];
+                                  }
                                 },
                                 child: Icon(
                                   Icons.add,
